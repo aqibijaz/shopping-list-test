@@ -4,12 +4,12 @@ import cors from "cors";
 import dotenv from "dotenv";
 import router from "./routers/api";
 import { databaseConnection } from "./database";
+import { CONSTANTS } from "./config";
 
 dotenv.config();
 const app = express();
 
 const appPromise = async () => {
-  const port = process.env.PORT || 8080;
   app.use(express.json({ limit: "100mb" }));
   app.use(express.static(path.join(__dirname, "../public")));
   app.use(express.urlencoded({ extended: true }));
@@ -18,11 +18,13 @@ const appPromise = async () => {
 
   app.use("/api", router);
   app.use("*", (_, res) => {
-    return res.status(404).send('Invalid Route Provided!')
+    return res.status(404).send("Invalid Route Provided!");
   });
 
-  app.listen(port, () => {
-    console.log(`Server is running on port: http://localhost:${port} `);
+  app.listen(CONSTANTS.PORT, () => {
+    console.log(
+      `Server is running on port: http://localhost:${CONSTANTS.PORT} `
+    );
   });
 };
 

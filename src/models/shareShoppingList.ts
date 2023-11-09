@@ -1,10 +1,10 @@
-import mongoose, { Model, Document, Schema } from "mongoose";
+import mongoose, { Model, Document, Schema, ObjectId } from "mongoose";
 enum permission {
   write = "write",
   read = "read",
 }
 export interface shareShoppingListDocument extends Document {
-  id: string;
+  ownerId: ObjectId;
   listId: string;
   sharedWith: string;
   permission: permission;
@@ -18,14 +18,17 @@ export interface getShoppingList {
   data: shareShoppingListDocument[] | null;
 }
 
-const shoppingListSchema = new Schema({
-  id: { type: String },
-  listId: { type: Schema.Types.ObjectId, ref: "User" },
-  sharedWith: { type: String, required: true },
+const shareShoppingListSchema = new Schema({
+  ownerId: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
+  listId: { type: Schema.Types.ObjectId, ref: "ShoppingList" },
+  sharedWith: { type: String, required: true, ref: "User" },
   permission: { type: String, enum: permission, required: true },
 });
 
 const ShareShoppingList: Model<shareShoppingListDocument> =
-  mongoose.model<shareShoppingListDocument>("ShoppingList", shoppingListSchema);
+  mongoose.model<shareShoppingListDocument>(
+    "ShareShoppingList",
+    shareShoppingListSchema
+  );
 
 export default ShareShoppingList;

@@ -10,7 +10,9 @@ sessionRouter.get("/", validateToken, async (req: Request, res: Response) => {
     const matchUser: sessionResponse = await controller.manageSession(req);
     return res.status(200).send(matchUser);
   } catch (error) {
-    return res.status(error.code || 403).send(error.message);
+    return res
+      .status(error.code || 500)
+      .send(error.message || "Unexpected error");
   }
 });
 

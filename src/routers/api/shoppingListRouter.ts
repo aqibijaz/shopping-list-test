@@ -29,7 +29,9 @@ shoppingListRouter.post(
       );
       return res.status(response.code).send(response.message);
     } catch (error) {
-      return res.status(error.code).send(error.message);
+      return res
+        .status(error.code || 500)
+        .send(error.message || "Unexpected error");
     }
   }
 );
@@ -38,15 +40,17 @@ shoppingListRouter.get(
   validateToken,
   async (req: Request, res: Response) => {
     try {
-      const id: getShareShoppingListPayload = { id: req.params.userId };
-      const { error, value: body } = getShoppingListValidation(id);
+      const userId: getShareShoppingListPayload = { id: req.params.userId };
+      const { error, value: body } = getShoppingListValidation(userId);
       if (error) return res.status(400).send(error.details[0].message);
       const response: getShoppingList = await controller.getSharedShoppingList(
         body
       );
       return res.status(response.code).send(response.data);
     } catch (error) {
-      return res.status(error.code).send(error.message);
+      return res
+        .status(error.code || 500)
+        .send(error.message || "Unexpected error");
     }
   }
 );
