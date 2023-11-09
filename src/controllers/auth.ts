@@ -6,8 +6,8 @@ class AuthController {
   async signup(body) {
     const { name, email, password, conformPassword } = body;
 
-    const findUser = await User.findOne({ email });
-    if (findUser)
+    const userExist = await User.findOne({ email });
+    if (userExist)
       throw {
         code: 403,
         message: "User already exist",

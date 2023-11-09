@@ -9,7 +9,7 @@ export interface itemDocument {
   items: item[];
 }
 
-const listSchema = new mongoose.Schema<itemDocument>({
+const shoppingListSchema = new mongoose.Schema<itemDocument>({
   ownerId: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "User",
@@ -22,8 +22,8 @@ const listSchema = new mongoose.Schema<itemDocument>({
   ],
 });
 
-const ListModel: Model<itemDocument> = mongoose.model<itemDocument>(
-  "ListModel",
-  listSchema
+const ShoppingList: Model<itemDocument> = mongoose.model<itemDocument>(
+  "ShoppingList",
+  shoppingListSchema
 );
-export default ListModel;
+export default ShoppingList;
